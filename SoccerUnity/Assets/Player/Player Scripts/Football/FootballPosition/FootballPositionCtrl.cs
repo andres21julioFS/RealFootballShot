@@ -48,8 +48,6 @@ public class FieldPositionsData
             return clone;
         }
     }
-
-    public HorizontalPositionType horizontalPositionType;
     public PlayerPositionType playerPositionType;
     public List<Point> points;
     [HideInInspector] public FieldPositionsData.Point selectedPoint;
@@ -57,7 +55,6 @@ public class FieldPositionsData
     public FieldPositionsData Clone()
     {
         FieldPositionsData clone = new FieldPositionsData();
-        clone.horizontalPositionType = horizontalPositionType;
         clone.points = new List<Point>();
         foreach (var point in points)
         {
@@ -96,6 +93,7 @@ public class FootballPositionCtrl : MonoBehaviour
     public float fieldLenght { get => MatchComponents.footballField.fieldLenght; }
     public float fieldWidth{ get => MatchComponents.footballField.fieldWidth; }
     public Vector2 newPointPosition = new Vector2(0.5f,0.5f);
+    public FieldPositionsData.HorizontalPositionType horizontalPositionType;
     Vector2 normalizedPosition,normalizedBallPosition;
     float horizontalAdjustInfo;
     [HideInInspector]
@@ -149,15 +147,15 @@ public class FootballPositionCtrl : MonoBehaviour
     {
         List<FieldPositionsData.Point> filteredPoints = new List<FieldPositionsData.Point>();
         List<FieldPositionsData.Point> removedPoints = new List<FieldPositionsData.Point>();
-        Vector3 position = getGlobalPosition(selectedFieldPositionParameters,normalizedPosition);
+        Vector3 position = getGlobalPosition(horizontalPositionType,normalizedPosition);
         foreach (var point1 in points)
         {
-            Vector3 point1GlobalPosition = getGlobalPosition(selectedFieldPositionParameters, point1.point);
+            Vector3 point1GlobalPosition = getGlobalPosition(horizontalPositionType, point1.point);
             bool addPoint = true;
             List<FieldPositionsData.Point> removePoints = new List<FieldPositionsData.Point>();
             foreach (var point2 in filteredPoints)
             {
-                Vector3 point2GlobalPosition = getGlobalPosition(selectedFieldPositionParameters, point2.point);
+                Vector3 point2GlobalPosition = getGlobalPosition(horizontalPositionType, point2.point);
                 Vector3 dir1 = point2GlobalPosition-point1GlobalPosition;
                 Plane plane1 = new Plane(dir1, point1GlobalPosition);
                 if (!plane1.GetSide(position))
@@ -273,12 +271,12 @@ public class FootballPositionCtrl : MonoBehaviour
         }
         return result;
     }
-    public Vector2 getNormalizedPosition(FieldPositionsData footballPositionParameters, Vector3 position)
+    public Vector2 getNormalizedPosition(FieldPositionsData.HorizontalPositionType horizontalPositionType, Vector3 position)
     {
         float verticalBallDistance = mySideOfField.backPlane.GetDistanceToPoint(position)/fieldLenght;
         verticalBallDistance = Mathf.Clamp01(verticalBallDistance);
         float horizontalBallDistance;
-        if (footballPositionParameters.horizontalPositionType.Equals(FieldPositionsData.HorizontalPositionType.Right)){
+        if (horizontalPositionType.Equals(FieldPositionsData.HorizontalPositionType.Right)){
 
             horizontalBallDistance = mySideOfField.rightPlane.GetDistanceToPoint(position)/fieldWidth;
         }
@@ -291,11 +289,11 @@ public class FootballPositionCtrl : MonoBehaviour
         normalizedBallPosition = new Vector2(horizontalBallDistance, verticalBallDistance);
         return normalizedBallPosition;
     }
-    public Vector3 getGlobalPosition(FieldPositionsData footballPositionParameters, Vector2 normalizedPosition)
+    public Vector3 getGlobalPosition(FieldPositionsData.HorizontalPositionType horizontalPositionType, Vector2 normalizedPosition)
     {
         Vector3 globalPosition= mySideOfField.backTransform.TransformPoint(Vector3.forward*normalizedPosition.y*fieldLenght);
         Vector3 globalHorizontalPosition;
-        if (footballPositionParameters.horizontalPositionType.Equals(FieldPositionsData.HorizontalPositionType.Right))
+        if (horizontalPositionType.Equals(FieldPositionsData.HorizontalPositionType.Right))
         {
             globalHorizontalPosition = mySideOfField.rightTransform.TransformDirection(Vector3.forward * normalizedPosition.x * fieldWidth - Vector3.forward * (fieldWidth/2));
 
