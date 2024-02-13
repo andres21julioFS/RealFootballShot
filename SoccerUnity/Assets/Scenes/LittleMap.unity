@@ -1824,8 +1824,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debug: 1
-  debugRadios: 1
+  debugRadios: 0
   debugAllPositions: 1
+  debugAllValues: 0
+  debugSymmetricalPositions: 0
   mySideOfField: {fileID: 197799707}
   rivalSideOfField: {fileID: 832117063}
   setupFootballField: {fileID: 872377283}
@@ -1838,163 +1840,100 @@ MonoBehaviour:
         - playerPositionType: 4
           points:
           - enabled: 1
-            info: LateralBack 1
-            point: {x: 0.19327095, y: 0.035873722}
-            value: {x: 0.100957565, y: 0.06431122}
-            radio: 0.30033338
+            info: Point 0
+            point: {x: 0.17553891, y: 0.040417157}
+            value: {x: 0.17163064, y: 0.099771716}
+            radio: 0.31074676
             useRadio: 1
             snap: 1
           - enabled: 1
-            info: LateralBack 1
-            point: {x: 0.4871649, y: 0.49915335}
-            value: {x: 0.21603459, y: 0.2700177}
+            info: Point 1
+            point: {x: 0.2567924, y: 0.43024474}
+            value: {x: 0.07947108, y: 0.2471934}
+            radio: 0.032440923
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: Point 2
+            point: {x: 0.48624498, y: 0.021052774}
+            value: {x: 0.46947432, y: 0.0060311686}
             radio: 0
             useRadio: 0
             snap: 0
           - enabled: 1
-            info: LateralBack 1
-            point: {x: 0.42988312, y: 0.004492086}
-            value: {x: 0.4306944, y: 0.004167184}
+            info: Point 3
+            point: {x: 0.39731368, y: 0.010048432}
+            value: {x: 0.4162709, y: 0.014126673}
             radio: 0
             useRadio: 0
             snap: 0
           - enabled: 1
-            info: LateralBack 1
-            point: {x: 0.008795075, y: 0.4961539}
-            value: {x: 0.10341876, y: 0.29359955}
+            info: Point 4
+            point: {x: 0.49377826, y: 0.09974466}
+            value: {x: 0.44255275, y: 0.09881718}
             radio: 0
             useRadio: 0
             snap: 0
           - enabled: 1
-            info: LateralBack 1
-            point: {x: 0.3903321, y: 0.15833572}
-            value: {x: 0.38901627, y: 0.1601002}
+            info: Point 5
+            point: {x: 0.35267562, y: 0.10538766}
+            value: {x: 0.33857453, y: 0.13800992}
+            radio: 0.81999934
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: Point 6
+            point: {x: 0.3539887, y: 0.15944475}
+            value: {x: 0.335424, y: 0.15803617}
             radio: 0
             useRadio: 0
             snap: 0
           - enabled: 1
-            info: LateralBack 1
-            point: {x: 0.5060564, y: 0.16320634}
-            value: {x: 0.42456353, y: 0.18269253}
+            info: Point 7
+            point: {x: 0.49626914, y: 0.15604764}
+            value: {x: 0.43099555, y: 0.15533473}
             radio: 0
             useRadio: 0
             snap: 0
           - enabled: 1
-            info: LateralBack 1
-            point: {x: 0.05283666, y: 0.35421658}
-            value: {x: 0.02779976, y: 0.35986814}
-            radio: 0.07803881
-            useRadio: 1
-            snap: 1
-          - enabled: 1
-            info: LateralBack 1
-            point: {x: 0.22190094, y: 0.28092209}
-            value: {x: 0.22153543, y: 0.28034365}
+            info: Point 8
+            point: {x: 0.8522687, y: 0.046928346}
+            value: {x: 0.4329057, y: 0.044719286}
             radio: 0
             useRadio: 0
             snap: 0
           - enabled: 1
-            info: LateralBack 1
-            point: {x: 0.35707626, y: 0.002665237}
-            value: {x: 0.35766232, y: 0.0016549227}
+            info: Point 9
+            point: {x: 0.6819671, y: 0.020588191}
+            value: {x: 0.4715839, y: 0.021433458}
             radio: 0
             useRadio: 0
             snap: 0
           - enabled: 1
-            info: LateralBack 1
-            point: {x: 0.21177027, y: 0.4985239}
-            value: {x: 0.15212373, y: 0.2811252}
+            info: Point 10
+            point: {x: 0.8590906, y: 0.15778066}
+            value: {x: 0.36676723, y: 0.15524669}
             radio: 0
             useRadio: 0
             snap: 0
           - enabled: 1
-            info: LateralBack 1
-            point: {x: 0.007588632, y: 0.9996349}
-            value: {x: 0.05806274, y: 0.61633074}
+            info: Point 11
+            point: {x: 0.5778025, y: 0.025601294}
+            value: {x: 0.4679605, y: 0}
             radio: 0
             useRadio: 0
             snap: 0
           - enabled: 1
-            info: LateralBack 1
-            point: {x: 0.21889542, y: 0.9947586}
-            value: {x: 0.15675741, y: 0.6107111}
+            info: Point 12
+            point: {x: 0.08331719, y: 0.16338362}
+            value: {x: 0.08669679, y: 0.1661676}
             radio: 0
             useRadio: 0
             snap: 0
           - enabled: 1
-            info: LateralBack 1
-            point: {x: 0.019885702, y: 0.84006834}
-            value: {x: 0.08248505, y: 0.54776}
-            radio: 0
-            useRadio: 0
-            snap: 0
-          - enabled: 1
-            info: LateralBack 1
-            point: {x: 0.2303243, y: 0.840523}
-            value: {x: 0.13191013, y: 0.54635847}
-            radio: 0
-            useRadio: 0
-            snap: 0
-          - enabled: 1
-            info: LateralBack 1
-            point: {x: 0.7859342, y: 0.8399429}
-            value: {x: 0.2890003, y: 0.5126345}
-            radio: 0
-            useRadio: 0
-            snap: 0
-          - enabled: 1
-            info: LateralBack 1
-            point: {x: 0.4889004, y: 0.85687846}
-            value: {x: 0.18820341, y: 0.54167354}
-            radio: 0
-            useRadio: 0
-            snap: 0
-          - enabled: 1
-            info: LateralBack 1
-            point: {x: 0.8945948, y: 0.5168596}
-            value: {x: 0.33449453, y: 0.2743336}
-            radio: 0
-            useRadio: 0
-            snap: 0
-          - enabled: 1
-            info: LateralBack 1
-            point: {x: 0.87254614, y: 0.17060879}
-            value: {x: 0.39565298, y: 0.15176354}
-            radio: 0
-            useRadio: 0
-            snap: 0
-          - enabled: 1
-            info: LateralBack 1
-            point: {x: 0.8569558, y: 0.03676418}
-            value: {x: 0.4355495, y: 0.054751366}
-            radio: 0
-            useRadio: 0
-            snap: 0
-          - enabled: 1
-            info: LateralBack 1
-            point: {x: 0.52304536, y: 0.09445041}
-            value: {x: 0.5018386, y: 0.06581531}
-            radio: 0
-            useRadio: 0
-            snap: 0
-          - enabled: 1
-            info: LateralBack 1
-            point: {x: 0.61862034, y: 0.003948494}
-            value: {x: 0.47948024, y: 0.030539734}
-            radio: 0
-            useRadio: 0
-            snap: 0
-          - enabled: 1
-            info: LateralBack 1
-            point: {x: 0.08265057, y: 0.25420326}
-            value: {x: 0.28885666, y: 0.14029355}
-            radio: 0.12388079
-            useRadio: 1
-            snap: 1
-          - enabled: 1
-            info: LateralBack 1
-            point: {x: 0.40325412, y: 0.121526405}
-            value: {x: 0.40671557, y: 0.12131276}
+            info: LateralBack 13
+            point: {x: 0.015467671, y: 0.014498645}
+            value: {x: 0.01997466, y: 0.016872449}
             radio: 0
             useRadio: 0
             snap: 0
@@ -2009,163 +1948,424 @@ MonoBehaviour:
         - playerPositionType: 3
           points:
           - enabled: 1
+            info: CenterBack 0
+            point: {x: 0.17553891, y: 0.040417157}
+            value: {x: 0.45291895, y: 0.043491963}
+            radio: 0.0071372516
+            useRadio: 0
+            snap: 0
+          - enabled: 1
             info: CenterBack 1
-            point: {x: 0.19327095, y: 0.035873722}
-            value: {x: 0.100957565, y: 0.06431122}
-            radio: 0.30033338
+            point: {x: 0.2567924, y: 0.43024474}
+            value: {x: 0.4379433, y: 0.17797838}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: CenterBack 2
+            point: {x: 0.48624498, y: 0.021052774}
+            value: {x: 0.5008622, y: 0.011152428}
+            radio: 0.03962583
             useRadio: 1
             snap: 1
           - enabled: 1
-            info: CenterBack 1
-            point: {x: 0.4871649, y: 0.49915335}
-            value: {x: 0.21603459, y: 0.2700177}
+            info: CenterBack 3
+            point: {x: 0.39731368, y: 0.010048432}
+            value: {x: 0.42297518, y: 0.0184803}
             radio: 0
             useRadio: 0
             snap: 0
           - enabled: 1
-            info: CenterBack 1
-            point: {x: 0.42988312, y: 0.004492086}
-            value: {x: 0.4306944, y: 0.004167184}
+            info: CenterBack 4
+            point: {x: 0.49377826, y: 0.09974466}
+            value: {x: 0.49346203, y: 0.099262044}
             radio: 0
-            useRadio: 0
-            snap: 0
-          - enabled: 1
-            info: CenterBack 1
-            point: {x: 0.008795075, y: 0.4961539}
-            value: {x: 0.10341876, y: 0.29359955}
-            radio: 0
-            useRadio: 0
-            snap: 0
-          - enabled: 1
-            info: CenterBack 1
-            point: {x: 0.3903321, y: 0.15833572}
-            value: {x: 0.38901627, y: 0.1601002}
-            radio: 0
-            useRadio: 0
-            snap: 0
-          - enabled: 1
-            info: CenterBack 1
-            point: {x: 0.5060564, y: 0.16320634}
-            value: {x: 0.394163, y: 0.16252384}
-            radio: 0
-            useRadio: 0
-            snap: 0
-          - enabled: 1
-            info: CenterBack 1
-            point: {x: 0.05283666, y: 0.35421658}
-            value: {x: 0.02779976, y: 0.35986814}
-            radio: 0.07803881
             useRadio: 1
-            snap: 1
+            snap: 0
           - enabled: 1
-            info: CenterBack 1
-            point: {x: 0.22190094, y: 0.28092209}
-            value: {x: 0.22153543, y: 0.28034365}
+            info: CenterBack 5
+            point: {x: 0.35267562, y: 0.10538766}
+            value: {x: 0.43226698, y: 0.07958804}
             radio: 0
             useRadio: 0
             snap: 0
           - enabled: 1
-            info: CenterBack 1
-            point: {x: 0.35707626, y: 0.002665237}
-            value: {x: 0.35766232, y: 0.0016549227}
+            info: CenterBack 6
+            point: {x: 0.3539887, y: 0.15944475}
+            value: {x: 0.4155513, y: 0.156947}
             radio: 0
             useRadio: 0
             snap: 0
           - enabled: 1
-            info: CenterBack 1
-            point: {x: 0.21177027, y: 0.4985239}
-            value: {x: 0.15212373, y: 0.2811252}
+            info: CenterBack 7
+            point: {x: 0.49626914, y: 0.15604764}
+            value: {x: 0.49000907, y: 0.15502954}
             radio: 0
             useRadio: 0
             snap: 0
           - enabled: 1
-            info: CenterBack 1
-            point: {x: 0.007588632, y: 0.9996349}
-            value: {x: 0.05806274, y: 0.61633074}
+            info: CenterBack 8
+            point: {x: 0.8522687, y: 0.046928346}
+            value: {x: 0.487574, y: 0.04362079}
             radio: 0
             useRadio: 0
             snap: 0
           - enabled: 1
-            info: CenterBack 1
-            point: {x: 0.21889542, y: 0.9947586}
-            value: {x: 0.15675741, y: 0.6107111}
+            info: CenterBack 9
+            point: {x: 0.6819671, y: 0.020588191}
+            value: {x: 0.5055393, y: 0.021057054}
             radio: 0
             useRadio: 0
             snap: 0
           - enabled: 1
-            info: CenterBack 1
-            point: {x: 0.019885702, y: 0.84006834}
-            value: {x: 0.08248505, y: 0.54776}
+            info: CenterBack 10
+            point: {x: 0.8590906, y: 0.15778066}
+            value: {x: 0.4687245, y: 0.15592049}
             radio: 0
             useRadio: 0
             snap: 0
           - enabled: 1
-            info: CenterBack 1
-            point: {x: 0.2303243, y: 0.840523}
-            value: {x: 0.13191013, y: 0.54635847}
+            info: CenterBack 11
+            point: {x: 0.5778025, y: 0.025601294}
+            value: {x: 0.5076509, y: 0.008378381}
             radio: 0
             useRadio: 0
             snap: 0
           - enabled: 1
-            info: CenterBack 1
-            point: {x: 0.7859342, y: 0.8399429}
-            value: {x: 0.2890003, y: 0.5126345}
+            info: CenterBack 12
+            point: {x: 0.08331719, y: 0.16338362}
+            value: {x: 0.43160132, y: 0.15547134}
             radio: 0
             useRadio: 0
             snap: 0
           - enabled: 1
-            info: CenterBack 1
-            point: {x: 0.4889004, y: 0.85687846}
-            value: {x: 0.18820341, y: 0.54167354}
+            info: CenterBack 13
+            point: {x: 0.015467671, y: 0.014498645}
+            value: {x: 0.43506518, y: 0.05729679}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          selectedPoint:
+            enabled: 0
+            info: 
+            point: {x: 0, y: 0}
+            value: {x: 0, y: 0}
+            radio: 0
+            useRadio: 0
+            snap: 0
+        - playerPositionType: 2
+          points:
+          - enabled: 1
+            info: EdgeMidfield 0
+            point: {x: 0.17553891, y: 0.040417157}
+            value: {x: 0.31115288, y: 0.08195695}
+            radio: 0.076049626
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: EdgeMidfield 1
+            point: {x: 0.2567924, y: 0.43024474}
+            value: {x: 0.08264427, y: 0.43581793}
+            radio: 0.022267295
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: EdgeMidfield 2
+            point: {x: 0.48624498, y: 0.021052774}
+            value: {x: 0.45596206, y: 0.04160322}
             radio: 0
             useRadio: 0
             snap: 0
           - enabled: 1
-            info: CenterBack 1
-            point: {x: 0.8945948, y: 0.5168596}
-            value: {x: 0.33449453, y: 0.2743336}
+            info: EdgeMidfield 3
+            point: {x: 0.39731368, y: 0.010048432}
+            value: {x: 0.4672796, y: 0.042774152}
             radio: 0
             useRadio: 0
             snap: 0
           - enabled: 1
-            info: CenterBack 1
-            point: {x: 0.87254614, y: 0.17060879}
-            value: {x: 0.39565298, y: 0.15176354}
+            info: EdgeMidfield 4
+            point: {x: 0.49377826, y: 0.09974466}
+            value: {x: 0.39117673, y: 0.098062694}
             radio: 0
             useRadio: 0
             snap: 0
           - enabled: 1
-            info: CenterBack 1
-            point: {x: 0.8569558, y: 0.03676418}
-            value: {x: 0.4355495, y: 0.054751366}
+            info: EdgeMidfield 5
+            point: {x: 0.35267562, y: 0.10538766}
+            value: {x: 0.2992264, y: 0.09873985}
             radio: 0
             useRadio: 0
             snap: 0
           - enabled: 1
-            info: CenterBack 1
-            point: {x: 0.52304536, y: 0.09445041}
-            value: {x: 0.48696542, y: 0.06373508}
+            info: EdgeMidfield 6
+            point: {x: 0.3539887, y: 0.15944475}
+            value: {x: 0.25894395, y: 0.16652429}
             radio: 0
             useRadio: 0
             snap: 0
           - enabled: 1
-            info: CenterBack 1
-            point: {x: 0.61862034, y: 0.003948494}
-            value: {x: 0.47948024, y: 0.030539734}
+            info: EdgeMidfield 7
+            point: {x: 0.49626914, y: 0.15604764}
+            value: {x: 0.36432132, y: 0.16069591}
             radio: 0
             useRadio: 0
             snap: 0
           - enabled: 1
-            info: CenterBack 1
-            point: {x: 0.08265057, y: 0.25420326}
-            value: {x: 0.28885666, y: 0.14029355}
-            radio: 0.12388079
-            useRadio: 1
-            snap: 1
+            info: EdgeMidfield 8
+            point: {x: 0.8522687, y: 0.046928346}
+            value: {x: 0.4021375, y: 0.09042214}
+            radio: 0
+            useRadio: 0
+            snap: 0
           - enabled: 1
-            info: CenterBack 1
-            point: {x: 0.40325412, y: 0.121526405}
-            value: {x: 0.40671557, y: 0.12131276}
+            info: EdgeMidfield 9
+            point: {x: 0.6819671, y: 0.020588191}
+            value: {x: 0.44488508, y: 0.034138568}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: EdgeMidfield 10
+            point: {x: 0.8590906, y: 0.15778066}
+            value: {x: 0.27143052, y: 0.24674028}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          - enabled: 0
+            info: EdgeMidfield 11
+            point: {x: 0.5778025, y: 0.025601294}
+            value: {x: 0.4009021, y: 0.066455945}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: EdgeMidfield 12
+            point: {x: 0.08331719, y: 0.16338362}
+            value: {x: 0.1390202, y: 0.20962334}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: EdgeMidfield 13
+            point: {x: 0.015467671, y: 0.014498645}
+            value: {x: 0.15262844, y: 0.040279772}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          selectedPoint:
+            enabled: 0
+            info: 
+            point: {x: 0, y: 0}
+            value: {x: 0, y: 0}
+            radio: 0
+            useRadio: 0
+            snap: 0
+        - playerPositionType: 1
+          points:
+          - enabled: 1
+            info: CenterMidfield 0
+            point: {x: 0.17553891, y: 0.040417157}
+            value: {x: 0.46793807, y: 0.086984076}
+            radio: 0.076049626
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: CenterMidfield 1
+            point: {x: 0.2567924, y: 0.43024474}
+            value: {x: 0.39183846, y: 0.38783982}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: CenterMidfield 2
+            point: {x: 0.48624498, y: 0.021052774}
+            value: {x: 0.48412967, y: 0.053842984}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: CenterMidfield 3
+            point: {x: 0.39731368, y: 0.010048432}
+            value: {x: 0.5005588, y: 0.051329654}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: CenterMidfield 4
+            point: {x: 0.49377826, y: 0.09974466}
+            value: {x: 0.49496427, y: 0.1356948}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: CenterMidfield 5
+            point: {x: 0.35267562, y: 0.10538766}
+            value: {x: 0.4159351, y: 0.15852384}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: CenterMidfield 6
+            point: {x: 0.3539887, y: 0.15944475}
+            value: {x: 0.42235985, y: 0.22721498}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: CenterMidfield 7
+            point: {x: 0.49626914, y: 0.15604764}
+            value: {x: 0.46355549, y: 0.16545682}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: CenterMidfield 8
+            point: {x: 0.8522687, y: 0.046928346}
+            value: {x: 0.48209235, y: 0.08013867}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: CenterMidfield 9
+            point: {x: 0.6819671, y: 0.020588191}
+            value: {x: 0.5018737, y: 0.057115845}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: CenterMidfield 10
+            point: {x: 0.8590906, y: 0.15778066}
+            value: {x: 0.44472697, y: 0.2022403}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: CenterMidfield 11
+            point: {x: 0.5778025, y: 0.025601294}
+            value: {x: 0.49008507, y: 0.024880385}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: CenterMidfield 12
+            point: {x: 0.08331719, y: 0.16338362}
+            value: {x: 0.23841166, y: 0.15653622}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: CenterMidfield 13
+            point: {x: 0.015467671, y: 0.014498645}
+            value: {x: 0.31192636, y: 0.121955685}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          selectedPoint:
+            enabled: 0
+            info: 
+            point: {x: 0, y: 0}
+            value: {x: 0, y: 0}
+            radio: 0
+            useRadio: 0
+            snap: 0
+        - playerPositionType: 0
+          points:
+          - enabled: 1
+            info: Forward 0
+            point: {x: 0.17553891, y: 0.040417157}
+            value: {x: 0.4541509, y: 0.37266585}
+            radio: 0.076049626
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: Forward 1
+            point: {x: 0.2567924, y: 0.43024474}
+            value: {x: 0.47124818, y: 0.49356782}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: Forward 2
+            point: {x: 0.48624498, y: 0.021052774}
+            value: {x: 0.4250949, y: 0.34631425}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: Forward 3
+            point: {x: 0.39731368, y: 0.010048432}
+            value: {x: 0.4475016, y: 0.33173445}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: Forward 4
+            point: {x: 0.49377826, y: 0.09974466}
+            value: {x: 0.45612383, y: 0.37683517}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: Forward 5
+            point: {x: 0.35267562, y: 0.10538766}
+            value: {x: 0.4782696, y: 0.39033878}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: Forward 6
+            point: {x: 0.3539887, y: 0.15944475}
+            value: {x: 0.48222005, y: 0.4262906}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: Forward 7
+            point: {x: 0.49626914, y: 0.15604764}
+            value: {x: 0.4600433, y: 0.39569357}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: Forward 8
+            point: {x: 0.8522687, y: 0.046928346}
+            value: {x: 0.42012906, y: 0.38539344}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: Forward 9
+            point: {x: 0.6819671, y: 0.020588191}
+            value: {x: 0.45525262, y: 0.4127011}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: Forward 10
+            point: {x: 0.8590906, y: 0.15778066}
+            value: {x: 0.47462314, y: 0.41530734}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          - enabled: 0
+            info: Forward 11
+            point: {x: 0.5778025, y: 0.025601294}
+            value: {x: 0.44210956, y: 0.39087367}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: Forward 12
+            point: {x: 0.08331719, y: 0.16338362}
+            value: {x: 0.42913565, y: 0.45105806}
+            radio: 0
+            useRadio: 0
+            snap: 0
+          - enabled: 1
+            info: Forward 13
+            point: {x: 0.015467671, y: 0.014498645}
+            value: {x: 0.29480898, y: 0.37872988}
             radio: 0
             useRadio: 0
             snap: 0
@@ -2178,9 +2378,9 @@ MonoBehaviour:
             useRadio: 0
             snap: 0
   buttonSize: 0.5
-  newPointPosition: {x: 0.20829022, y: 0.15820138}
+  newPointPosition: {x: 0.025558934, y: 0.015250383}
   horizontalPositionType: 0
-  normailizedBallPosition: {x: 0.38720495, y: 0.29221115}
+  normailizedBallPosition: {x: 0.11054808, y: 0.17161345}
   selectedFieldPositionParameters:
     playerPositionType: 0
     points:
@@ -2350,7 +2550,7 @@ MonoBehaviour:
   playerPositionType: 4
   lineupName: Default
   pressureName: Default
-  playerSize: 11
+  playerSize: 5
 --- !u!1 &58919443
 GameObject:
   m_ObjectHideFlags: 0

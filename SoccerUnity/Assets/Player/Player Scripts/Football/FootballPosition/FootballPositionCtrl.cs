@@ -80,11 +80,10 @@ public class LineupFieldPositionDatasList
 {
     public List<LineupFieldPositionDatas> LineupFieldPositionDatas = new List<LineupFieldPositionDatas>();
 }
-[ExecuteInEditMode]
 public class FootballPositionCtrl : MonoBehaviour
 {
     public bool debug;
-    public bool debugRadios,debugAllPositions;
+    public bool debugRadios,debugAllPositions,debugAllValues, debugSymmetricalPositions;
     //Vector3 ballPosition { get => MatchComponents.ballPosition; }
     public SideOfField mySideOfField,rivalSideOfField;
     public SetupFootballField setupFootballField;
@@ -105,7 +104,7 @@ public class FootballPositionCtrl : MonoBehaviour
     [HideInInspector] public FieldPositionsData.PlayerPositionType playerPositionType;
     [HideInInspector] public string lineupName = "Default";
     [HideInInspector] public string pressureName = "Default";
-    [HideInInspector] public int playerSize = 11;
+    public int playerSize = 5;
     /* void Start()
     {
        string text = File.ReadAllText(Application.dataPath + "/Player/Player Scripts/Football/FootballPosition/FieldPoints.json");
@@ -218,7 +217,8 @@ public class FootballPositionCtrl : MonoBehaviour
             }
             
 
-            hs[i] = Mathf.Infinity;
+            //hs[i] = Mathf.Infinity;
+            hs[i] = 1;
             for (int j = 0; j < points.Count; j++)
             {
                 if (i == j) continue;
@@ -335,6 +335,10 @@ public class FootballPositionCtrl : MonoBehaviour
         lineupFieldPositionData = null;
         LineupFieldPositionDatas LineupFieldPositionDatas = LineupFieldPositionList.LineupFieldPositionDatas.Find(x => x.name.Equals(lineupName));
         return LineupFieldPositionDatas != null;
+    }
+    public FieldPositionsData.HorizontalPositionType getOtherHorizontalPositionType(FieldPositionsData.HorizontalPositionType horizontalPositionType)
+    {
+        return horizontalPositionType == FieldPositionsData.HorizontalPositionType.Left ? FieldPositionsData.HorizontalPositionType.Right : FieldPositionsData.HorizontalPositionType.Left;
     }
     /*
    public void getWeightyValue3(Vector2 p, List<FieldPositionParameters.Point> points, out Vector2 value)
