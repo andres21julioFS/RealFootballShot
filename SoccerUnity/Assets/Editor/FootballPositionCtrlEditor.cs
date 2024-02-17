@@ -136,7 +136,25 @@ public class FootballPositionCtrlEditor : Editor
             t.LineupFieldPositionList= LineupFieldPositionDatasList;
         }
         GUILayout.EndHorizontal();
-        
+        EditorGUILayout.Space(10.0f);
+        EditorGUILayout.LabelField("Offside Line", EditorStyles.boldLabel);
+        if (GUILayout.Button("Add Offside Line"))
+        {
+            OffsideLine offsideLine = new OffsideLine(t.newPointPosition.y, t.newPointPosition.y-0.02f);
+            pressureFieldPositionDatas.offsideLines.Add(offsideLine);
+            selectedOffsideLine = offsideLine;
+            SceneView.RepaintAll();
+        }
+        if (selectedOffsideLine != null)
+        {
+            EditorGUI.BeginChangeCheck();
+            selectedOffsideLine.enabled = EditorGUILayout.Toggle("enabled", selectedOffsideLine.enabled);
+            selectedOffsideLine.stop = EditorGUILayout.Toggle("stop", selectedOffsideLine.stop);
+            if (EditorGUI.EndChangeCheck())
+            {
+                SceneView.RepaintAll();
+            }
+        }
         //fieldPositionParameters.selectedPoint = selectedPoint;
         //t.selectedFieldPositionParameters = fieldPositionParameters;
         serializedObject.ApplyModifiedProperties();
@@ -144,6 +162,7 @@ public class FootballPositionCtrlEditor : Editor
 
     FieldPositionsData.Point selectedPoint;
     FieldPositionsData.Point selectedValue;
+    OffsideLine selectedOffsideLine;
     int selectedPointIndex;
     public void OnSceneGUI()
     {
@@ -233,6 +252,50 @@ public class FootballPositionCtrlEditor : Editor
             }
             i++;
         }
+        int k = 0;
+        foreach (var offsideLine in PressureFieldPositionDatas.offsideLines)
+        {
+            Color color = Color.green;
+            if (!offsideLine.enabled) color.a = a;
+            Handles.color = color;
+            Vector2 normalizedPos = new Vector2(0, offsideLine.yPos);
+            if (Handles.Button(t.getGlobalPosition(t.horizontalPositionType, normalizedPos), Quaternion.identity, buttonSize, 1, Handles.SphereHandleCap))
+            {
+                selectedOffsideLine = offsideLine;
+                Repaint();
+            }
+            style2.normal.textColor = Color.yellow;
+            Handles.Label(t.getGlobalPosition(t.horizontalPositionType, normalizedPos) + Vector3.up * 1f, "Offside Line "+k, style2);
+            k++;
+        }
+        if (selectedOffsideLine != null)
+        {
+            EditorGUI.BeginChangeCheck();
+            Vector2 normalizedPos = new Vector2(0, selectedOffsideLine.yPos);
+            Vector3 pos4 = Handles.PositionHandle(t.getGlobalPosition(t.horizontalPositionType, normalizedPos), Quaternion.identity);
+            if (EditorGUI.EndChangeCheck())
+            {
+                selectedOffsideLine.yPos = t.getNormalizedPosition(t.horizontalPositionType, pos4).y;
+            }
+            
+            EditorGUI.BeginChangeCheck();
+            Vector2 normalizedValue = new Vector2(0, selectedOffsideLine.yValue);
+            Vector3 pos5= Handles.PositionHandle(t.getGlobalPosition(t.horizontalPositionType, normalizedValue), Quaternion.identity);
+            if (EditorGUI.EndChangeCheck())
+            {
+                selectedOffsideLine.yValue = t.getNormalizedPosition(t.horizontalPositionType, pos5).y;
+            }
+            Handles.Label(pos5 + Vector3.up * 0.5f, "Offside Value", style2);
+        }
+        else
+        {
+            if (PressureFieldPositionDatas.offsideLines.Count > 0)
+            {
+                selectedOffsideLine = PressureFieldPositionDatas.offsideLines[0];
+            }
+            //Repaint();
+        }
+
         EditorGUI.BeginChangeCheck();
         Vector3 pos1 = Handles.PositionHandle(t.getGlobalPosition(t.horizontalPositionType, t.newPointPosition), Quaternion.identity);
         GUIStyle style = new GUIStyle();
@@ -363,6 +426,7 @@ public class FootballPositionCtrlEditor : Editor
             }
             //Repaint();
         }
+
         if (t.debugRadios) DrawRaidos(fieldPositionParameters,t);
         //DrawPositions(fieldPositionParameters,t);
         //fieldPositionParameters.selectedPoint = selectedPoint;

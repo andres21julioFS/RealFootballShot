@@ -50,6 +50,7 @@ public class FieldPositionsData
     }
     public PlayerPositionType playerPositionType;
     public List<Point> points;
+    
     [HideInInspector] public FieldPositionsData.Point selectedPoint;
 
     public FieldPositionsData Clone()
@@ -68,6 +69,7 @@ public class PressureFieldPositionDatas
 {
     public string name = "Default";
     public List<FieldPositionsData> FieldPositionDatas = new List<FieldPositionsData>();
+    public List<OffsideLine> offsideLines=new List<OffsideLine>();
 }
 [System.Serializable]
 public class LineupFieldPositionDatas
@@ -79,6 +81,18 @@ public class LineupFieldPositionDatas
 public class LineupFieldPositionDatasList
 {
     public List<LineupFieldPositionDatas> LineupFieldPositionDatas = new List<LineupFieldPositionDatas>();
+}
+[System.Serializable]
+public class OffsideLine
+{
+    public float yPos, yValue;
+    public bool stop,enabled=true;
+
+    public OffsideLine(float yPos, float yValue)
+    {
+        this.yPos = yPos;
+        this.yValue = yValue;
+    }
 }
 public class FootballPositionCtrl : MonoBehaviour
 {
@@ -122,26 +136,19 @@ public class FootballPositionCtrl : MonoBehaviour
         sideOfFields.Add(rivalSideOfField);
         setupFootballField.loadFieldDimensions(sideOfFields);
     }
-#if UNITY_EDITOR
-    private void OnDrawGizmos2()
+    public void AddOffsideLine(PressureFieldPositionDatas pressureFieldPositionDatas,OffsideLine offsideLine)
     {
-        if (Selection.activeGameObject != gameObject) return;
-
-    }
-#endif
-#if UNITY_EDITOR
-    private void OnDrawGizmos()
-    {
-        if (!debug || Selection.activeGameObject != gameObject) return;
-
-        /*List<FootballPositionParameters.Point> filteredPoints = pointsFilter(normailizedBallPosition, footballPositionParameters.points);
-        foreach (var filteredPoint in filteredPoints)
+        int index = 0;
+        foreach (var offsideLine1 in pressureFieldPositionDatas.offsideLines)
         {
-            Gizmos.color = Color.cyan;
-            Gizmos.DrawSphere(getGlobalPosition(filteredPoint.point) + Vector3.up*0.5f, 0.25f);
-        }*/
+            if (offsideLine.yPos < offsideLine1.yPos)
+            {
+                break;
+            }
+            index++;
+        }
+        pressureFieldPositionDatas.offsideLines.Insert(index, offsideLine);
     }
-#endif
     List<FieldPositionsData.Point> pointsFilter(Vector2 normalizedPosition, List<FieldPositionsData.Point> points)
     {
         List<FieldPositionsData.Point> filteredPoints = new List<FieldPositionsData.Point>();

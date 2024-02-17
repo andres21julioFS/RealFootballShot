@@ -1931,7 +1931,7 @@ MonoBehaviour:
             useRadio: 0
             snap: 0
           - enabled: 1
-            info: LateralBack 13
+            info: Point 13
             point: {x: 0.015467671, y: 0.014498645}
             value: {x: 0.06346482, y: 0.014106806}
             radio: 0
@@ -1945,7 +1945,7 @@ MonoBehaviour:
             useRadio: 0
             snap: 0
           - enabled: 1
-            info: Point 15
+            info: LateralBack 15
             point: {x: 0.26419017, y: 0.15587312}
             value: {x: 0.28660104, y: 0.14061357}
             radio: 0
@@ -2447,10 +2447,19 @@ MonoBehaviour:
             radio: 0
             useRadio: 0
             snap: 0
+        offsideLines:
+        - yPos: 0.2941656
+          yValue: 0.25247115
+          stop: 0
+          enabled: 1
+        - yPos: 0.3752559
+          yValue: 0.34902364
+          stop: 0
+          enabled: 1
   buttonSize: 0.5
-  newPointPosition: {x: 0.25329694, y: 0.15637758}
+  newPointPosition: {x: 0.29857403, y: 0.38281363}
   horizontalPositionType: 0
-  normailizedBallPosition: {x: 0.09720829, y: 0.103055425}
+  normailizedBallPosition: {x: 0.1956559, y: 0.16565442}
   selectedFieldPositionParameters:
     playerPositionType: 0
     points:
