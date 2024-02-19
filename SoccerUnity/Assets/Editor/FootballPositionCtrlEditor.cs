@@ -38,7 +38,7 @@ public class FootballPositionCtrlEditor : Editor
 
         PressureFieldPositionDatas pressureFieldPositionDatas;
         if (!t.getCurrentPressureFieldPositions(out pressureFieldPositionDatas)) return;
-
+        
         FieldPositionsData fieldPositionParameters;
         if (!t.GetSelectedFieldPositionParameters(out fieldPositionParameters)) return;
         
@@ -64,10 +64,12 @@ public class FootballPositionCtrlEditor : Editor
                 selectedPoint.point = EditorGUILayout.Vector2Field("Point", selectedPoint.point);
                 selectedPoint.value = EditorGUILayout.Vector2Field("Value", selectedPoint.value);
                 selectedPoint.radio = EditorGUILayout.FloatField("Radio", selectedPoint.radio);
+                
                 EditorGUI.BeginChangeCheck();
                 selectedPoint.enabled = EditorGUILayout.Toggle("enabled", selectedPoint.enabled);
                 selectedPoint.useRadio = EditorGUILayout.Toggle("use radio", selectedPoint.useRadio);
                 selectedPoint.snap = EditorGUILayout.Toggle("snap", selectedPoint.snap);
+                selectedPoint.weight = EditorGUILayout.Slider("Weight", selectedPoint.weight, 0, 1);
                 if (EditorGUI.EndChangeCheck())
                 {
                     SceneView.RepaintAll();
@@ -138,18 +140,62 @@ public class FootballPositionCtrlEditor : Editor
         GUILayout.EndHorizontal();
         EditorGUILayout.Space(10.0f);
         EditorGUILayout.LabelField("Offside Line", EditorStyles.boldLabel);
+
+        GUILayout.BeginHorizontal();
         if (GUILayout.Button("Add Offside Line"))
         {
             OffsideLine offsideLine = new OffsideLine(t.newPointPosition.y, t.newPointPosition.y-0.02f);
-            pressureFieldPositionDatas.offsideLines.Add(offsideLine);
+            t.AddOffsideLine(pressureFieldPositionDatas, offsideLine);
             selectedOffsideLine = offsideLine;
             SceneView.RepaintAll();
         }
+        if (GUILayout.Button("Remove Offside Line"))
+        {
+            if (selectedOffsideLine != null)
+            {
+                pressureFieldPositionDatas.offsideLines.Remove(selectedOffsideLine);
+                selectedOffsideLine = null;
+                SceneView.RepaintAll();
+            }
+        }
+        
+        GUILayout.EndHorizontal();
         if (selectedOffsideLine != null)
         {
             EditorGUI.BeginChangeCheck();
             selectedOffsideLine.enabled = EditorGUILayout.Toggle("enabled", selectedOffsideLine.enabled);
             selectedOffsideLine.stop = EditorGUILayout.Toggle("stop", selectedOffsideLine.stop);
+            if (EditorGUI.EndChangeCheck())
+            {
+                SceneView.RepaintAll();
+            }
+        }
+
+        EditorGUILayout.Space(10.0f);
+        EditorGUILayout.LabelField("Offside Stop", EditorStyles.boldLabel);
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("Add Offside Stop"))
+        {
+            OffsideStop offsideStop = new OffsideStop(t.newPointPosition, 0.1f);
+            pressureFieldPositionDatas.offsideStops.Add(offsideStop);
+            selectedOffsideStop = offsideStop;
+            SceneView.RepaintAll();
+        }
+        if (GUILayout.Button("Remove Offside Stop"))
+        {
+            if (selectedOffsideStop != null)
+            {
+                pressureFieldPositionDatas.offsideStops.Remove(selectedOffsideStop);
+                selectedOffsideStop = null;
+                SceneView.RepaintAll();
+            }
+        }
+        GUILayout.EndHorizontal();
+        if (selectedOffsideStop != null)
+        {
+            EditorGUI.BeginChangeCheck();
+            selectedOffsideStop.enabled = EditorGUILayout.Toggle("enabled", selectedOffsideStop.enabled);
+            selectedOffsideStop.radio = EditorGUILayout.FloatField("radio", selectedOffsideStop.radio);
             if (EditorGUI.EndChangeCheck())
             {
                 SceneView.RepaintAll();
@@ -163,6 +209,7 @@ public class FootballPositionCtrlEditor : Editor
     FieldPositionsData.Point selectedPoint;
     FieldPositionsData.Point selectedValue;
     OffsideLine selectedOffsideLine;
+    OffsideStop selectedOffsideStop;
     int selectedPointIndex;
     public void OnSceneGUI()
     {
@@ -188,6 +235,7 @@ public class FootballPositionCtrlEditor : Editor
             {
                 selectedPoint = item;
                 selectedPointIndex = i;
+                selectedOffsideStop = null;
                 Repaint();
             }
             color = Color.blue;
@@ -218,6 +266,7 @@ public class FootballPositionCtrlEditor : Editor
                     {
                         selectedPoint = point;
                         selectedPointIndex = j;
+                        selectedOffsideStop = null;
                         Repaint();
                     }
 
@@ -239,6 +288,7 @@ public class FootballPositionCtrlEditor : Editor
                 if ( Handles.Button(t.getGlobalPosition(t.horizontalPositionType, point.value), Quaternion.identity, buttonSize, 1, Handles.SphereHandleCap))
                 {
                     selectedPoint = point;
+                    selectedOffsideStop = null;
                     Repaint();
                 }
 
@@ -295,6 +345,67 @@ public class FootballPositionCtrlEditor : Editor
             }
             //Repaint();
         }
+        Color color5 = new Color(1, 1, 0.5f);
+        Handles.color = color5;
+        GUIStyle style4 = new GUIStyle();
+        style4.fontSize = 14;
+        style4.normal.textColor = color5;
+        float offsideWeight;
+        float offsideLineValueY = t.GetOffsideLineGetValue(PressureFieldPositionDatas, t.normailizedBallPosition,out offsideWeight);
+        Vector3 globalResultOffsideLineValue = t.getGlobalPosition(t.horizontalPositionType, new Vector2(0, offsideLineValueY));
+        Handles.Label(globalResultOffsideLineValue + Vector3.up * 1.5f, "Offside Line Result", style4);
+        Handles.SphereHandleCap(0,
+           globalResultOffsideLineValue,
+           Quaternion.identity,
+           0.5f,
+           EventType.Repaint
+       );
+
+        k = 0;
+        Color color2 = new Color(0.5f, 1, 0.5f,1);
+        foreach (var offsideStop in PressureFieldPositionDatas.offsideStops)
+        {
+            
+            if (!offsideStop.enabled) color2.a = a;
+            Handles.color = color2;
+            if (Handles.Button(t.getGlobalPosition(t.horizontalPositionType, offsideStop.point), Quaternion.identity, buttonSize, 1, Handles.SphereHandleCap))
+            {
+                selectedOffsideStop = offsideStop;
+                Repaint();
+            }
+            style2.normal.textColor = color2;
+            Handles.Label(t.getGlobalPosition(t.horizontalPositionType, offsideStop.point) + Vector3.up * 1f, "Offside Stop " + k, style2);
+            k++;
+        }
+
+        if (selectedOffsideStop != null)
+        {
+            if (!selectedOffsideStop.enabled) color2.a = a;
+            Handles.color = color2;
+            EditorGUI.BeginChangeCheck();
+            Vector2 normalizedPos = selectedOffsideStop.point;
+            Vector3 globalPoint = t.getGlobalPosition(t.horizontalPositionType, normalizedPos);
+            Vector3 pos4 = Handles.PositionHandle(globalPoint, Quaternion.identity);
+            if (EditorGUI.EndChangeCheck())
+            {
+                selectedOffsideStop.point = t.getNormalizedPosition(t.horizontalPositionType, pos4);
+            }
+
+            EditorGUI.BeginChangeCheck();
+            float scaleSize = 10;
+            Vector3 scale = Handles.ScaleHandle(Vector3.one * (selectedOffsideStop.radio + 0.01f) * scaleSize, globalPoint + Vector3.up * 1, Quaternion.identity, 1);
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                Undo.RecordObject(target, "Scaled ScaleAt Point");
+                selectedOffsideStop.radio = Mathf.Clamp(scale.x / scaleSize, 0, Mathf.Infinity);
+            }
+            Handles.color = color2;
+            Handles.DrawWireDisc(globalPoint, new Vector3(0, 1, 0), selectedOffsideStop.radio * t.fieldWidth);
+        }
+
+
+
 
         EditorGUI.BeginChangeCheck();
         Vector3 pos1 = Handles.PositionHandle(t.getGlobalPosition(t.horizontalPositionType, t.newPointPosition), Quaternion.identity);
@@ -332,7 +443,7 @@ public class FootballPositionCtrlEditor : Editor
         foreach (var FieldPositionData in PressureFieldPositionDatas.FieldPositionDatas)
         {
             Handles.color = Color.black;
-            t.getWeightyValue4(t.normailizedBallPosition, FieldPositionData.points, out weightyValue);
+            t.getWeightyValue4(t.normailizedBallPosition, FieldPositionData.points,offsideLineValueY,FieldPositionData.playerPositionType, offsideWeight, out weightyValue);
             
             Handles.SphereHandleCap(0, t.getGlobalPosition(t.horizontalPositionType, weightyValue) + Vector3.up * 0.25f, Quaternion.identity, 0.5f, EventType.Repaint);
             string info = FieldPositionData.playerPositionType.ToString();
@@ -345,7 +456,7 @@ public class FootballPositionCtrlEditor : Editor
                 Vector2 weightValue2 = Vector2.zero;
                 Vector2 symmetricalBallPosition = t.normailizedBallPosition;
                 symmetricalBallPosition.x = 1 - symmetricalBallPosition.x;
-                t.getWeightyValue4(symmetricalBallPosition, FieldPositionData.points, out weightValue2);
+                t.getWeightyValue4(symmetricalBallPosition, FieldPositionData.points, offsideLineValueY, FieldPositionData.playerPositionType, offsideWeight, out weightValue2);
                 Handles.color = Color.grey;
                 FieldPositionsData.HorizontalPositionType otherHorizontalPositionType = t.getOtherHorizontalPositionType(t.horizontalPositionType);
                 Handles.SphereHandleCap(0, t.getGlobalPosition(otherHorizontalPositionType, weightValue2) + Vector3.up * 0.25f, Quaternion.identity, 0.5f, EventType.Repaint);
@@ -356,7 +467,7 @@ public class FootballPositionCtrlEditor : Editor
             }
 
         }
-
+        
         if (selectedPoint != null)
         {
             if (true || fieldPositionParameters.points.Contains(selectedPoint))
@@ -364,15 +475,28 @@ public class FootballPositionCtrlEditor : Editor
                 Vector3 selectedGlobalPoint = t.getGlobalPosition(t.horizontalPositionType, selectedPoint.point);
                 Vector3 selectedGlobalValue = t.getGlobalPosition(t.horizontalPositionType, selectedPoint.value);
                 EditorGUI.BeginChangeCheck();
+                Vector3 pos2 = selectedGlobalPoint;
                 Vector3 pos = Handles.PositionHandle(selectedGlobalPoint, Quaternion.identity);
+                
                 if (EditorGUI.EndChangeCheck())
                 {
+
                     Undo.RecordObject(target, "Move point");
                     Vector2 normalizedPosition = t.getNormalizedPosition(t.horizontalPositionType, pos);
                     selectedPoint.point = normalizedPosition;
                     for ( i = 0; i < PressureFieldPositionDatas.FieldPositionDatas.Count; i++)
                     {
                         PressureFieldPositionDatas.FieldPositionDatas[i].points[selectedPointIndex].point = normalizedPosition;
+                    }
+
+                    Event e = Event.current;
+                    if (e.alt)
+                    {
+                        foreach (var FieldPositionData in PressureFieldPositionDatas.FieldPositionDatas)
+                        {
+                            Vector2 offset = normalizedPosition - FieldPositionData.points[selectedPointIndex].value;
+                            FieldPositionData.points[selectedPointIndex].value = normalizedPosition + offset;
+                        }
                     }
                     Repaint();
                     //t.Update();
@@ -407,11 +531,11 @@ public class FootballPositionCtrlEditor : Editor
                 if (!selectedPoint.snap && selectedPoint.enabled)
                 {
                     EditorGUI.BeginChangeCheck();
-                    Vector3 pos2 = Handles.PositionHandle(selectedGlobalValue, Quaternion.identity);
+                    Vector3 pos5 = Handles.PositionHandle(selectedGlobalValue, Quaternion.identity);
                     if (EditorGUI.EndChangeCheck())
                     {
                         Undo.RecordObject(target, "Move point");
-                        selectedPoint.value = t.getNormalizedPosition(t.horizontalPositionType, pos2);
+                        selectedPoint.value = t.getNormalizedPosition(t.horizontalPositionType, pos5);
                         Repaint();
                         //t.Update();
                     }
@@ -432,7 +556,7 @@ public class FootballPositionCtrlEditor : Editor
         //fieldPositionParameters.selectedPoint = selectedPoint;
         //t.selectedFieldPositionParameters = fieldPositionParameters;
     }
-    void DrawPositions(FieldPositionsData fieldPositionParameters, FootballPositionCtrl t)
+    void DrawPositions(FieldPositionsData fieldPositionParameters, FootballPositionCtrl t,float offsidePositionY,float offsideWeight)
     {
         if (!t.debug || !t.debugAllPositions) return;
         PressureFieldPositionDatas fieldPositionList;
@@ -442,7 +566,7 @@ public class FootballPositionCtrlEditor : Editor
         {
             if (fieldPositionParameters.playerPositionType.Equals(fieldPositions.playerPositionType)) continue;
                 Vector2 weightyValue;
-                t.getWeightyValue4(t.normailizedBallPosition, fieldPositions.points, out weightyValue);
+                t.getWeightyValue4(t.normailizedBallPosition, fieldPositions.points,offsidePositionY, fieldPositions.playerPositionType,offsideWeight, out weightyValue);
                 Vector3 globalPosition = t.getGlobalPosition(t.horizontalPositionType, weightyValue);
                 Handles.color = Color.grey;
                 GUIStyle style3 = new GUIStyle();

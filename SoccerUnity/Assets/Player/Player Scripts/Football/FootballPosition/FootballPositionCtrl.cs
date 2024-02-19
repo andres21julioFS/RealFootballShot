@@ -23,7 +23,7 @@ public class FieldPositionsData
         public string info;
         public Vector2 point;
         public Vector2 value;
-        public float radio;
+        public float radio,weight=1;
         public bool useRadio=false;
         public bool snap;
         public Point(Vector2 point,Vector2 value)
@@ -70,6 +70,7 @@ public class PressureFieldPositionDatas
     public string name = "Default";
     public List<FieldPositionsData> FieldPositionDatas = new List<FieldPositionsData>();
     public List<OffsideLine> offsideLines=new List<OffsideLine>();
+    public List<OffsideStop> offsideStops = new List<OffsideStop>();
 }
 [System.Serializable]
 public class LineupFieldPositionDatas
@@ -92,6 +93,20 @@ public class OffsideLine
     {
         this.yPos = yPos;
         this.yValue = yValue;
+    }
+}
+[System.Serializable]
+public class OffsideStop
+{
+    public Vector2 point;
+    public float radio,lerpRadio;
+    public bool enabled=true;
+
+    public OffsideStop(Vector2 point, float radio)
+    {
+        this.point = point;
+        this.radio = radio;
+        this.lerpRadio = radio;
     }
 }
 public class FootballPositionCtrl : MonoBehaviour
@@ -149,42 +164,75 @@ public class FootballPositionCtrl : MonoBehaviour
         }
         pressureFieldPositionDatas.offsideLines.Insert(index, offsideLine);
     }
-    List<FieldPositionsData.Point> pointsFilter(Vector2 normalizedPosition, List<FieldPositionsData.Point> points)
+    public float GetOffsideLineGetValue(PressureFieldPositionDatas pressureFieldPositionDatas,Vector2 normalizedPosition,out float weight)
     {
-        List<FieldPositionsData.Point> filteredPoints = new List<FieldPositionsData.Point>();
-        List<FieldPositionsData.Point> removedPoints = new List<FieldPositionsData.Point>();
-        Vector3 position = getGlobalPosition(horizontalPositionType,normalizedPosition);
-        foreach (var point1 in points)
+        float d1 = 1, d2 = 1;
+        int index1 = -1, index2 = -1;
+        int i = 0;
+        
+        foreach (var offsideLine in pressureFieldPositionDatas.offsideLines)
         {
-            Vector3 point1GlobalPosition = getGlobalPosition(horizontalPositionType, point1.point);
-            bool addPoint = true;
-            List<FieldPositionsData.Point> removePoints = new List<FieldPositionsData.Point>();
-            foreach (var point2 in filteredPoints)
+            if (!offsideLine.enabled) continue;
+            float distance = offsideLine.yPos - normalizedPosition.y;
+            if (distance < 0)
             {
-                Vector3 point2GlobalPosition = getGlobalPosition(horizontalPositionType, point2.point);
-                Vector3 dir1 = point2GlobalPosition-point1GlobalPosition;
-                Plane plane1 = new Plane(dir1, point1GlobalPosition);
-                if (!plane1.GetSide(position))
+                if (Mathf.Abs(distance) < Mathf.Abs(d1))
                 {
-                    removePoints.Add(point2);
+                    d1 = distance;
+                    index1 = i;
                 }
-                Vector3 dir2 = point1GlobalPosition-point2GlobalPosition;
-                Plane plane2 = new Plane(dir2, point2GlobalPosition);
-                if (!plane2.GetSide(position))
+            }else if (distance > 0)
+            {
+                if (Mathf.Abs(distance) < Mathf.Abs(d2))
                 {
-                    addPoint = false;
-                    break;
+                    d2 = distance;
+                    index2 = i;
                 }
             }
-            filteredPoints.RemoveAll(x=>removePoints.Contains(x));
-            if (addPoint)
+            else
             {
-                filteredPoints.Add(point1);
+                weight = offsideLine.stop ? 0 : 1;
+                return offsideLine.yValue;
             }
-
+            i++;
         }
-        return filteredPoints;
+        if (index1 != -1 && index2 == -1)
+        {
+            weight = pressureFieldPositionDatas.offsideLines[index1].stop ? 0 : 1;
+            return pressureFieldPositionDatas.offsideLines[index1].yValue;
+        }else if(index1 == -1 && index2 != -1)
+        {
+            weight = pressureFieldPositionDatas.offsideLines[index2].stop ? 0 : 1;
+            return pressureFieldPositionDatas.offsideLines[index2].yValue;
+        }
+        else
+        {
+            float w2 = Mathf.Abs(d1) / (Mathf.Abs(d1) + Mathf.Abs(d2));
+            float w1 = 1 - w2;
+            if (pressureFieldPositionDatas.offsideLines[index1].stop&& !pressureFieldPositionDatas.offsideLines[index2].stop)
+            {
+                weight = w2;
+                return pressureFieldPositionDatas.offsideLines[index2].yValue;
+            }
+            else if(!pressureFieldPositionDatas.offsideLines[index1].stop && pressureFieldPositionDatas.offsideLines[index2].stop)
+            {
+                weight = w1;
+                return pressureFieldPositionDatas.offsideLines[index1].yValue;
+            }else if(pressureFieldPositionDatas.offsideLines[index1].stop && pressureFieldPositionDatas.offsideLines[index2].stop)
+            {
+                weight = 0;
+                float result = pressureFieldPositionDatas.offsideLines[index1].yValue * w1 + pressureFieldPositionDatas.offsideLines[index2].yValue * w2;
+                return result;
+            }
+            else
+            {
+                weight = 1;
+                float result = pressureFieldPositionDatas.offsideLines[index1].yValue * w1 + pressureFieldPositionDatas.offsideLines[index2].yValue * w2;
+                return result;
+            }
+        }
     }
+    
     void getWeightyValue(Vector2 normalizedPosition, List<FieldPositionsData.Point> points, out Vector2 value)
     {
         //Vector2 normalizedPosition = getNormalizedPosition(position);
@@ -203,7 +251,11 @@ public class FootballPositionCtrl : MonoBehaviour
         p.y = p.y * fieldLenght / fieldWidth;
         return p;
     }
-    public void getWeightyValue4(Vector2 normalizedPosition, List<FieldPositionsData.Point> points,out Vector2 value)
+    bool isDefensePlayer(FieldPositionsData.PlayerPositionType playerPositionType)
+    {
+        return playerPositionType.Equals(FieldPositionsData.PlayerPositionType.CenterBack) || playerPositionType.Equals(FieldPositionsData.PlayerPositionType.LateralBack);
+    }
+    public void getWeightyValue4(Vector2 normalizedPosition, List<FieldPositionsData.Point> points,float offsideLinePosY, FieldPositionsData.PlayerPositionType playerPositionType,float weightOffsideLine, out Vector2 value)
     {
         float totalH = 0;
         float[] hs = new float[points.Count];
@@ -223,7 +275,6 @@ public class FootballPositionCtrl : MonoBehaviour
                 pi += dir;
             }
             
-
             //hs[i] = Mathf.Infinity;
             hs[i] = 1;
             for (int j = 0; j < points.Count; j++)
@@ -240,7 +291,8 @@ public class FootballPositionCtrl : MonoBehaviour
                 }
                 float p1 = Vector2.Dot(p - pi, pj - pi);
                 float p2 = Vector2.Distance(pi, pj);
-                float h_2 = Mathf.Clamp01(1 - (p1 / (p2 * p2)));
+                float h_2 = Mathf.Clamp01(1 - (p1 / (p2 * p2))* points[j].weight) * points[i].weight;
+
                 if (h_2 < hs[i]) hs[i] = h_2;
 
             }
@@ -251,6 +303,14 @@ public class FootballPositionCtrl : MonoBehaviour
             weights[i] = hs[i] / totalH;
         }
         value = getValue(weights, points, normalizedPosition);
+        if (isDefensePlayer(playerPositionType))
+        {
+            value.y = Mathf.Lerp(value.y,offsideLinePosY,weightOffsideLine);
+        }
+        else
+        {
+            value.y = Mathf.Lerp(value.y, Mathf.Clamp(value.y, offsideLinePosY,1), weightOffsideLine);
+        }
         //value = Vector2.zero;
         return;
     }
