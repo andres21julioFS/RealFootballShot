@@ -112,7 +112,7 @@ public class OffsideStop
 public class FootballPositionCtrl : MonoBehaviour
 {
     public bool debug;
-    public bool debugRadios,debugAllPositions,debugAllValues, debugSymmetricalPositions;
+    public bool debugRadios,debugAllPositions,debugAllValues, debugSymmetricalPositions,debugText=true,debugOnlyPlayerPositions;
     //Vector3 ballPosition { get => MatchComponents.ballPosition; }
     public SideOfField mySideOfField,rivalSideOfField;
     public SetupFootballField setupFootballField;

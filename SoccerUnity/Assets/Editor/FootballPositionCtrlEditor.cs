@@ -231,6 +231,7 @@ public class FootballPositionCtrlEditor : Editor
             Color color = Color.red;
             if (!item.enabled) color.a = a;
             Handles.color = color;
+            if(!t.debugOnlyPlayerPositions)
             if (Handles.Button(t.getGlobalPosition(t.horizontalPositionType, item.point), Quaternion.identity, buttonSize, 1, Handles.SphereHandleCap))
             {
                 selectedPoint = item;
@@ -246,6 +247,8 @@ public class FootballPositionCtrlEditor : Editor
             if (!item.enabled) color.a = a;
             style2.normal.textColor = color;
             item.info = "Point " + i;
+            if (!t.debugOnlyPlayerPositions)
+                if (t.debugText)
             Handles.Label(t.getGlobalPosition(t.horizontalPositionType, item.point) + Vector3.up * 1f, item.info, style2);
             
             i++;
@@ -275,7 +278,8 @@ public class FootballPositionCtrlEditor : Editor
                     if (!point.enabled) textColor.a = a;
                     style2.normal.textColor = textColor;
                     point.info = FieldPositionData.playerPositionType.ToString() + " " + j;
-                    Handles.Label(t.getGlobalPosition(t.horizontalPositionType, point.value) + Vector3.up * 1f, point.info, style2);
+                    if (t.debugText)
+                        Handles.Label(t.getGlobalPosition(t.horizontalPositionType, point.value) + Vector3.up * 1f, point.info, style2);
                     j++;
                 }
             }
@@ -285,19 +289,22 @@ public class FootballPositionCtrlEditor : Editor
                 Color color = Color.blue;
                 if (!point.enabled) color.a = a;
                 Handles.color = color;
-                if ( Handles.Button(t.getGlobalPosition(t.horizontalPositionType, point.value), Quaternion.identity, buttonSize, 1, Handles.SphereHandleCap))
-                {
-                    selectedPoint = point;
-                    selectedOffsideStop = null;
-                    Repaint();
-                }
+                if (!t.debugOnlyPlayerPositions)
+                    if ( Handles.Button(t.getGlobalPosition(t.horizontalPositionType, point.value), Quaternion.identity, buttonSize, 1, Handles.SphereHandleCap))
+                    {
+                        selectedPoint = point;
+                        selectedOffsideStop = null;
+                        Repaint();
+                    }
 
                 style2.fontSize = 14;
                 Color textColor = Color.yellow;
                 if (!point.enabled) textColor.a = a;
                 style2.normal.textColor = textColor;
                 point.info = FieldPositionData.playerPositionType.ToString() + " " + selectedPointIndex;
-                Handles.Label(t.getGlobalPosition(t.horizontalPositionType, point.value) + Vector3.up * 1f, point.info, style2);
+                if (!t.debugOnlyPlayerPositions)
+                    if (t.debugText)
+                    Handles.Label(t.getGlobalPosition(t.horizontalPositionType, point.value) + Vector3.up * 1f, point.info, style2);
 
             }
             i++;
@@ -309,33 +316,41 @@ public class FootballPositionCtrlEditor : Editor
             if (!offsideLine.enabled) color.a = a;
             Handles.color = color;
             Vector2 normalizedPos = new Vector2(0, offsideLine.yPos);
-            if (Handles.Button(t.getGlobalPosition(t.horizontalPositionType, normalizedPos), Quaternion.identity, buttonSize, 1, Handles.SphereHandleCap))
+            if (!t.debugOnlyPlayerPositions)
+                if (Handles.Button(t.getGlobalPosition(t.horizontalPositionType, normalizedPos), Quaternion.identity, buttonSize, 1, Handles.SphereHandleCap))
             {
                 selectedOffsideLine = offsideLine;
                 Repaint();
             }
             style2.normal.textColor = Color.yellow;
-            Handles.Label(t.getGlobalPosition(t.horizontalPositionType, normalizedPos) + Vector3.up * 1f, "Offside Line "+k, style2);
+            if (!t.debugOnlyPlayerPositions)
+                if (t.debugText)
+                Handles.Label(t.getGlobalPosition(t.horizontalPositionType, normalizedPos) + Vector3.up * 1f, "Offside Line "+k, style2);
             k++;
         }
         if (selectedOffsideLine != null)
         {
             EditorGUI.BeginChangeCheck();
             Vector2 normalizedPos = new Vector2(0, selectedOffsideLine.yPos);
-            Vector3 pos4 = Handles.PositionHandle(t.getGlobalPosition(t.horizontalPositionType, normalizedPos), Quaternion.identity);
-            if (EditorGUI.EndChangeCheck())
+            if (!t.debugOnlyPlayerPositions)
             {
-                selectedOffsideLine.yPos = t.getNormalizedPosition(t.horizontalPositionType, pos4).y;
+                Vector3 pos4 = Handles.PositionHandle(t.getGlobalPosition(t.horizontalPositionType, normalizedPos), Quaternion.identity);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    selectedOffsideLine.yPos = t.getNormalizedPosition(t.horizontalPositionType, pos4).y;
+                }
+
+                EditorGUI.BeginChangeCheck();
+                Vector2 normalizedValue = new Vector2(0, selectedOffsideLine.yValue);
+                Vector3 pos5 = Handles.PositionHandle(t.getGlobalPosition(t.horizontalPositionType, normalizedValue), Quaternion.identity);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    selectedOffsideLine.yValue = t.getNormalizedPosition(t.horizontalPositionType, pos5).y;
+                }
+                if (t.debugText)
+                    Handles.Label(pos5 + Vector3.up * 0.5f, "Offside Value", style2);
             }
-            
-            EditorGUI.BeginChangeCheck();
-            Vector2 normalizedValue = new Vector2(0, selectedOffsideLine.yValue);
-            Vector3 pos5= Handles.PositionHandle(t.getGlobalPosition(t.horizontalPositionType, normalizedValue), Quaternion.identity);
-            if (EditorGUI.EndChangeCheck())
-            {
-                selectedOffsideLine.yValue = t.getNormalizedPosition(t.horizontalPositionType, pos5).y;
-            }
-            Handles.Label(pos5 + Vector3.up * 0.5f, "Offside Value", style2);
+                
         }
         else
         {
@@ -353,7 +368,9 @@ public class FootballPositionCtrlEditor : Editor
         float offsideWeight;
         float offsideLineValueY = t.GetOffsideLineGetValue(PressureFieldPositionDatas, t.normailizedBallPosition,out offsideWeight);
         Vector3 globalResultOffsideLineValue = t.getGlobalPosition(t.horizontalPositionType, new Vector2(0, offsideLineValueY));
-        Handles.Label(globalResultOffsideLineValue + Vector3.up * 1.5f, "Offside Line Result", style4);
+        if (!t.debugOnlyPlayerPositions)
+            if (t.debugText)
+            Handles.Label(globalResultOffsideLineValue + Vector3.up * 1.5f, "Offside Line Result", style4);
         Handles.SphereHandleCap(0,
            globalResultOffsideLineValue,
            Quaternion.identity,
@@ -368,76 +385,91 @@ public class FootballPositionCtrlEditor : Editor
             
             if (!offsideStop.enabled) color2.a = a;
             Handles.color = color2;
-            if (Handles.Button(t.getGlobalPosition(t.horizontalPositionType, offsideStop.point), Quaternion.identity, buttonSize, 1, Handles.SphereHandleCap))
+            if (!t.debugOnlyPlayerPositions)
+                if (Handles.Button(t.getGlobalPosition(t.horizontalPositionType, offsideStop.point), Quaternion.identity, buttonSize, 1, Handles.SphereHandleCap))
             {
                 selectedOffsideStop = offsideStop;
                 Repaint();
             }
             style2.normal.textColor = color2;
-            Handles.Label(t.getGlobalPosition(t.horizontalPositionType, offsideStop.point) + Vector3.up * 1f, "Offside Stop " + k, style2);
+            if (!t.debugOnlyPlayerPositions)
+                if (t.debugText)
+                Handles.Label(t.getGlobalPosition(t.horizontalPositionType, offsideStop.point) + Vector3.up * 1f, "Offside Stop " + k, style2);
             k++;
         }
 
         if (selectedOffsideStop != null)
         {
             if (!selectedOffsideStop.enabled) color2.a = a;
-            Handles.color = color2;
-            EditorGUI.BeginChangeCheck();
-            Vector2 normalizedPos = selectedOffsideStop.point;
-            Vector3 globalPoint = t.getGlobalPosition(t.horizontalPositionType, normalizedPos);
-            Vector3 pos4 = Handles.PositionHandle(globalPoint, Quaternion.identity);
-            if (EditorGUI.EndChangeCheck())
+            if (!t.debugOnlyPlayerPositions)
             {
-                selectedOffsideStop.point = t.getNormalizedPosition(t.horizontalPositionType, pos4);
-            }
+                Handles.color = color2;
+                EditorGUI.BeginChangeCheck();
+                Vector2 normalizedPos = selectedOffsideStop.point;
+                Vector3 globalPoint = t.getGlobalPosition(t.horizontalPositionType, normalizedPos);
+                Vector3 pos4 = Handles.PositionHandle(globalPoint, Quaternion.identity);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    selectedOffsideStop.point = t.getNormalizedPosition(t.horizontalPositionType, pos4);
+                }
 
-            EditorGUI.BeginChangeCheck();
-            float scaleSize = 10;
-            Vector3 scale = Handles.ScaleHandle(Vector3.one * (selectedOffsideStop.radio + 0.01f) * scaleSize, globalPoint + Vector3.up * 1, Quaternion.identity, 1);
+                EditorGUI.BeginChangeCheck();
+                float scaleSize = 10;
+                Vector3 scale = Handles.ScaleHandle(Vector3.one * (selectedOffsideStop.radio + 0.01f) * scaleSize, globalPoint + Vector3.up * 1, Quaternion.identity, 1);
 
-            if (EditorGUI.EndChangeCheck())
-            {
-                Undo.RecordObject(target, "Scaled ScaleAt Point");
-                selectedOffsideStop.radio = Mathf.Clamp(scale.x / scaleSize, 0, Mathf.Infinity);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    Undo.RecordObject(target, "Scaled ScaleAt Point");
+                    selectedOffsideStop.radio = Mathf.Clamp(scale.x / scaleSize, 0, Mathf.Infinity);
+                }
+                Handles.color = color2;
+                Handles.DrawWireDisc(globalPoint, new Vector3(0, 1, 0), selectedOffsideStop.radio * t.fieldWidth);
             }
-            Handles.color = color2;
-            Handles.DrawWireDisc(globalPoint, new Vector3(0, 1, 0), selectedOffsideStop.radio * t.fieldWidth);
+                
         }
 
 
 
 
         EditorGUI.BeginChangeCheck();
-        Vector3 pos1 = Handles.PositionHandle(t.getGlobalPosition(t.horizontalPositionType, t.newPointPosition), Quaternion.identity);
-        GUIStyle style = new GUIStyle();
-        style.fontSize = 14;
-        style.normal.textColor = Color.yellow;
-        Handles.Label(pos1 + Vector3.up * 0.5f,"New Point", style);
-        if (EditorGUI.EndChangeCheck())
+        if (!t.debugOnlyPlayerPositions)
         {
-            Undo.RecordObject(target, "Move point");
-            t.newPointPosition = t.getNormalizedPosition(t.horizontalPositionType, pos1);
-            Repaint();
-            //t.Update();
+            Vector3 pos1 = Handles.PositionHandle(t.getGlobalPosition(t.horizontalPositionType, t.newPointPosition), Quaternion.identity);
+            GUIStyle style = new GUIStyle();
+            style.fontSize = 14;
+            style.normal.textColor = Color.yellow;
+            if (t.debugText)
+                Handles.Label(pos1 + Vector3.up * 0.5f, "New Point", style);
+            if (EditorGUI.EndChangeCheck())
+            {
+                Undo.RecordObject(target, "Move point");
+                t.newPointPosition = t.getNormalizedPosition(t.horizontalPositionType, pos1);
+                Repaint();
+                //t.Update();
+            }
         }
+           
 
 
         EditorGUI.BeginChangeCheck();
-        Vector3 pos3 = Handles.PositionHandle(t.getGlobalPosition(t.horizontalPositionType, t.normailizedBallPosition), Quaternion.identity);
+
+            Vector3 pos3 = Handles.PositionHandle(t.getGlobalPosition(t.horizontalPositionType, t.normailizedBallPosition), Quaternion.identity);
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                //Undo.RecordObject(target, "Move point");
+                t.normailizedBallPosition = t.getNormalizedPosition(t.horizontalPositionType, pos3);
+                //Repaint();
+                //t.Update();
+            }
+            GUIStyle style3 = new GUIStyle();
+            style3.fontSize = 14;
+            style3.normal.textColor = Color.cyan;
+            if (t.debugText)
+                Handles.Label(pos3 + Vector3.up * 1.5f, "Ball position", style3);
+            Handles.color = Color.cyan;
+            Handles.DrawWireDisc(pos3 + Vector3.up * 0.25f, Vector3.up, 0.4f);
         
-        if (EditorGUI.EndChangeCheck())
-        {
-            //Undo.RecordObject(target, "Move point");
-            t.normailizedBallPosition = t.getNormalizedPosition(t.horizontalPositionType, pos3);
-            //Repaint();
-            //t.Update();
-        }
-        GUIStyle style3 = new GUIStyle();
-        style3.fontSize = 14;
-        style3.normal.textColor = Color.cyan;
-        Handles.Label(pos3 + Vector3.up * 1.5f, "Ball position", style3);
-        Handles.color = Color.cyan;
-        Handles.DrawWireDisc(pos3 + Vector3.up * 0.25f, Vector3.up, 0.4f);
         
         Vector2 weightyValue = Vector2.zero;
         foreach (var FieldPositionData in PressureFieldPositionDatas.FieldPositionDatas)
@@ -447,9 +479,11 @@ public class FootballPositionCtrlEditor : Editor
             
             Handles.SphereHandleCap(0, t.getGlobalPosition(t.horizontalPositionType, weightyValue) + Vector3.up * 0.25f, Quaternion.identity, 0.5f, EventType.Repaint);
             string info = FieldPositionData.playerPositionType.ToString();
+            GUIStyle style = new GUIStyle();
             style.fontSize = 16;
             style.normal.textColor = Color.black;
-            Handles.Label(t.getGlobalPosition(t.horizontalPositionType, weightyValue) + Vector3.up * 1f, info, style);
+            if (t.debugText)
+                Handles.Label(t.getGlobalPosition(t.horizontalPositionType, weightyValue) + Vector3.up * 1f, info, style);
 
             if (t.debugSymmetricalPositions)
             {
@@ -463,12 +497,12 @@ public class FootballPositionCtrlEditor : Editor
                 info = FieldPositionData.playerPositionType.ToString();
                 style.fontSize = 16;
                 style.normal.textColor = Color.white;
-                Handles.Label(t.getGlobalPosition(otherHorizontalPositionType, weightValue2) + Vector3.up * 1f, info, style);
+                if (t.debugText)
+                    Handles.Label(t.getGlobalPosition(otherHorizontalPositionType, weightValue2) + Vector3.up * 1f, info, style);
             }
 
         }
-        
-        if (selectedPoint != null)
+        if (selectedPoint != null && !t.debugOnlyPlayerPositions)
         {
             if (true || fieldPositionParameters.points.Contains(selectedPoint))
             {
@@ -476,6 +510,7 @@ public class FootballPositionCtrlEditor : Editor
                 Vector3 selectedGlobalValue = t.getGlobalPosition(t.horizontalPositionType, selectedPoint.value);
                 EditorGUI.BeginChangeCheck();
                 Vector3 pos2 = selectedGlobalPoint;
+                
                 Vector3 pos = Handles.PositionHandle(selectedGlobalPoint, Quaternion.identity);
                 
                 if (EditorGUI.EndChangeCheck())
@@ -494,8 +529,11 @@ public class FootballPositionCtrlEditor : Editor
                     {
                         foreach (var FieldPositionData in PressureFieldPositionDatas.FieldPositionDatas)
                         {
-                            Vector2 offset = normalizedPosition - FieldPositionData.points[selectedPointIndex].value;
-                            FieldPositionData.points[selectedPointIndex].value = normalizedPosition + offset;
+                            Vector3 globalPos = t.getGlobalPosition(t.horizontalPositionType, FieldPositionData.points[selectedPointIndex].value);
+                            
+                            Vector3 offset = globalPos + pos - pos2;
+                            Vector2 offset2 = t.getNormalizedPosition(t.horizontalPositionType, offset);
+                            FieldPositionData.points[selectedPointIndex].value = offset2;
                         }
                     }
                     Repaint();
