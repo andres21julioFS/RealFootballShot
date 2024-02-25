@@ -13,7 +13,7 @@ namespace DOTS_ChaserDataCalculation
         public NativeList<int> segmentedPathToRemoveCounts;
         List<Entity> enableEntities = new List<Entity>();
         List<Entity> disableEntities = new List<Entity>();
-        public SearchPathManager SearchPathManager;
+        public GetPerfectPassManager SearchPathManager;
         EntityManager entityManager;
         public void OnCreate()
         {

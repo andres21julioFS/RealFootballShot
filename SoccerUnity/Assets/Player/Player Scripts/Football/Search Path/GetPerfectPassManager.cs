@@ -6,7 +6,7 @@ using DOTS_ChaserDataCalculation;
 using Unity.Collections;
 using UnityEditor;
 
-public class SearchPathManager : MonoBehaviour, ILoad
+public class GetPerfectPassManager : MonoBehaviour, ILoad
 {
     
     EntityManager entityManager;

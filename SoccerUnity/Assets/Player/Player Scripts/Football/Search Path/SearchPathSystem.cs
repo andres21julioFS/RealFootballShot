@@ -10,7 +10,7 @@ public class SearchPathSystem : SystemBase
 {
     EntityQuery searchPathQuery,getPassV0Query,optimalPointQuery,segmentedPathQuery,testQuery;
     EntityQuery getPerfectPassQuery;
-    public SearchPathManager SearchPathManager;
+    public GetPerfectPassManager SearchPathManager;
     public Entity GetPassV0Entity;
     EntityManager entityManager;
     public Entity GetTimeToReachPointEntity;
