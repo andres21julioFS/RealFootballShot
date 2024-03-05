@@ -27494,7 +27494,7 @@ MonoBehaviour:
   testPointsParentTransform: {fileID: 818615340}
   teamNames: []
   teamDebugs:
-  - debug: 0
+  - debug: 1
     debugTriangles: 1
     debugEdges: 0
     debugPoints: 0
@@ -51215,7 +51215,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1322839334424030253, guid: 4600716e881ddd442b459f182df3d352, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.12199998
+      value: 0.14
       objectReference: {fileID: 0}
     - target: {fileID: 1322839334424030253, guid: 4600716e881ddd442b459f182df3d352, type: 3}
       propertyPath: m_LocalPosition.z

@@ -111,7 +111,7 @@ namespace DOTS_ChaserDataCalculation
                         segmentedPathResult.Pos0 = pos0;
                         segmentedPathResult.Posf = newPath.Pos0;
                         segmentedPathResult.V0 = v0;
-                        segmentedPathResult.V0Magnitude = v0.magnitude;
+                        segmentedPathResult.V0Magnitude = v0m;
                         segmentedPathResult.t0 = t0;
                         segmentedPathResult.tf = newPath.t0;
                         BouncyPathDOTS.getVelocityAtTime(newPath.t0, currentPath, ref v);
@@ -139,7 +139,7 @@ namespace DOTS_ChaserDataCalculation
                 segmentedPathResult.Pos0 = pos0;
                 segmentedPathResult.Posf = posf;
                 segmentedPathResult.V0 = v0;
-                segmentedPathResult.V0Magnitude = v0.magnitude;
+                segmentedPathResult.V0Magnitude = v0m;
                 segmentedPathResult.Vf = v;
                 segmentedPathResult.t0 = t0;
                 segmentedPathResult.tf = tf;
@@ -152,7 +152,7 @@ namespace DOTS_ChaserDataCalculation
                 segmentedPathResult.Pos0 = pos0;
                 segmentedPathResult.Posf = posf;
                 segmentedPathResult.V0 = v0;
-                segmentedPathResult.V0Magnitude = v0.magnitude;
+                segmentedPathResult.V0Magnitude = v0m;
                 segmentedPathResult.Vf = v;
                 segmentedPathResult.t0 = t0;
                 segmentedPathResult.tf = tf;
@@ -167,13 +167,13 @@ namespace DOTS_ChaserDataCalculation
                 segmentedPathResult.Pos0 = pos0;
                 segmentedPathResult.Posf = posf;
                 segmentedPathResult.V0 = newV0;
-                segmentedPathResult.V0Magnitude = v0.magnitude;
+                segmentedPathResult.V0Magnitude = v0m;
                 segmentedPathResult.Vf = v;
                 segmentedPathResult.t0 = t0;
                 segmentedPathResult.tf = tf;
                 return true;
             }
-            while (t0 <= tf && tf < timeRange && Mathf.Abs(v.magnitude - v0.magnitude) > 0)
+            while (t0 <= tf && tf < timeRange && Mathf.Abs(v.magnitude - v0m) > 0)
             {
                 count++;
 
@@ -183,13 +183,13 @@ namespace DOTS_ChaserDataCalculation
                     break;
                 }
                 timeIncrement /= 2;
-                if (Vector3.Angle(v0, v) > maxAngle || Mathf.Abs(v.magnitude - v0.magnitude) > maxVelocity)
+                if (Vector3.Angle(v0, v) > maxAngle || Mathf.Abs(v.magnitude - v0m) > maxVelocity)
                 {
                     //El segmento no sigue de forma adecuada la trayectoria ó la velocidad varía mucho durante el segmento
                     tf -= timeIncrement;
                     BouncyPathDOTS.getVelocityAtTime(tf,currentPath,ref v);
                 }
-                else if (Vector3.Angle(v0, v) < minAngle && Mathf.Abs(v.magnitude - v0.magnitude) < minVelocity)
+                else if (Vector3.Angle(v0, v) < minAngle && Mathf.Abs(v.magnitude - v0m) < minVelocity)
                 {
                     //El segmento es casi identico a la trayectoria y la velocidad no varía lo suficiente así que buscaremos en un instante posterior para intentar tener menos segmentos de la trayectoria
 
@@ -205,7 +205,7 @@ namespace DOTS_ChaserDataCalculation
                     segmentedPathResult.Pos0 = pos0;
                     segmentedPathResult.Posf = posf;
                     segmentedPathResult.V0 = newV0;
-                    segmentedPathResult.V0Magnitude = v0.magnitude;
+                    segmentedPathResult.V0Magnitude = v0m;
                     segmentedPathResult.Vf = v;
                     segmentedPathResult.t0 = t0;
                     segmentedPathResult.tf = tf;
