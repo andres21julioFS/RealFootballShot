@@ -283,8 +283,11 @@ namespace NextMove_Algorithm
                             Gizmos.DrawSphere(pos, gizmoSphereRadio);
 
                         }
-                        if(bufferSizeComponent.lonelyPointsResultSize>0)
-                        print(team.TeamName+ " Probes Generated = "+ bufferSizeComponent.lonelyPointsResultSize);
+                        if (bufferSizeComponent.lonelyPointsResultSize > 0 && teamDebug.debugText)
+                        {
+
+                            print(team.TeamName + " Probes Generated = " + bufferSizeComponent.lonelyPointsResultSize);
+                        }
                     }
                 }
             }

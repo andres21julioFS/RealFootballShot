@@ -46533,6 +46533,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1875775244}
   - component: {fileID: 1875775245}
+  - component: {fileID: 1875775246}
   m_Layer: 0
   m_Name: Search Path
   m_TagString: Untagged
@@ -46623,6 +46624,23 @@ MonoBehaviour:
   testPlanePoint: {fileID: 1050777184}
   testJobSize: 100
   v0Test: {x: 0, y: 0, z: 0}
+--- !u!114 &1875775246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875775243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0987c79f2b8ca347a9727a8f95e6239, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cullPassPointsParams:
+    entitySize: 10
+    entityPointSize: 10
+  SearchLonelyPointsManager: {fileID: 1028019885}
+  teamName: Red
 --- !u!1 &1876518188
 GameObject:
   m_ObjectHideFlags: 0
