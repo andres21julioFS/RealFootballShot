@@ -345,7 +345,7 @@ public class Team : MonoBehaviour
         }*/
     }
 }
-public class PlayerAddedToTeamEventArgs
+public struct PlayerAddedToTeamEventArgs
 {
     string playerID;
     public string PlayerID { get => playerID; set => playerID = value; }
@@ -354,8 +354,8 @@ public class PlayerAddedToTeamEventArgs
     public string TeamName { get => teamName; set => teamName = value; }
     public PlayerAddedToTeamEventArgs(string playerID,string teamName, PublicPlayerData publicPlayerData)
     {
-        this.PlayerID = playerID;
-        this.TeamName = teamName;
+        this.playerID = playerID;
+        this.teamName = teamName;
         this.publicPlayerData = publicPlayerData;
     }
 

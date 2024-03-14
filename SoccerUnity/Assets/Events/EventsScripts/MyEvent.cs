@@ -156,6 +156,11 @@ public class MyEvent<T> : MyEvent
     {
         return allNotInvokedArgs;
     }
+
+    internal void AddListener()
+    {
+        throw new System.NotImplementedException();
+    }
 }
 /*
 public class Listener

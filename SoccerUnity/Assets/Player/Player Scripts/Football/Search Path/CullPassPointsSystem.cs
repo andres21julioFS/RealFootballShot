@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Entities;
 using UnityEngine;
-
+using CullPositionPoint;
 [UpdateAfter(typeof(NextMoveSystem))]
 public class CullPassPointsSystem : SystemBase
 {
@@ -14,7 +14,7 @@ public class CullPassPointsSystem : SystemBase
     {
         var description1 = new EntityQueryDesc()
         {
-            All = new ComponentType[]{typeof(LonelyPointElement), typeof(CullPassPointsComponent) }
+            All = new ComponentType[]{typeof(LonelyPointElement), typeof(CullPassPointsComponent), typeof(PlayerPositionElement) }
         };
         cullPassPointsQuery = this.GetEntityQuery(description1);
     }
@@ -31,6 +31,7 @@ public class CullPassPointsSystem : SystemBase
         var CullPassPointsJob = new CullPassPointsJob();
 
         CullPassPointsJob.lonelyPointsHandle = this.GetBufferTypeHandle<LonelyPointElement>(true);
+        CullPassPointsJob.playerPositionElementHandle = this.GetBufferTypeHandle<PlayerPositionElement>(true);
         CullPassPointsJob.cullPassPointsParamsHandle = this.GetComponentTypeHandle<CullPassPointsComponent>(true);
         Dependency = CullPassPointsJob.ScheduleParallel(cullPassPointsQuery, 1, this.Dependency);
         Dependency.Complete();

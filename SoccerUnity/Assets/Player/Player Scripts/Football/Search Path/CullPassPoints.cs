@@ -5,7 +5,7 @@ using NextMove_Algorithm;
 using Unity.Entities;
 using FieldTriangleV2;
 using Unity.Collections;
-
+using CullPositionPoint;
 public class CullPassPoints : MonoBehaviour
 {
      [System.Serializable]
@@ -19,18 +19,47 @@ public class CullPassPoints : MonoBehaviour
     public bool test;
     List<Entity> entities=new List<Entity>();
     EntityManager entityManager;
+    List<PublicPlayerData> players=new List<PublicPlayerData>();
     void Start()
     {
         entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
         CullPassPointsSystem cullPassPointsSystem = World.DefaultGameObjectInjectionWorld.GetOrCreateSystem<CullPassPointsSystem>();
         cullPassPointsSystem.CullPassPoints = this;
+        
         createEntities();
+        MatchEvents.publicPlayerDataOfAddedPlayerToTeamIsAvailable.AddListener(PlayerAddedToTeam);
     }
+    void PlayerAddedToTeam(PlayerAddedToTeamEventArgs playerAddedToTeamEventArgs)
+    {
+        bool aux = false; ;
+        foreach (var entity in entities)
+        {
+            CullPassPointsComponent CullPassPointsComponent = entityManager.GetComponentData<CullPassPointsComponent>(entity);
+            DynamicBuffer<PlayerPositionElement> PlayerPositionElements = entityManager.GetBuffer<PlayerPositionElement>(entity);
+            if (playerAddedToTeamEventArgs.TeamName.Equals("Red"))
+            {
+                PlayerPositionElements.Insert(CullPassPointsComponent.teamRedSize,new PlayerPositionElement(Vector2.zero));
+                if(!aux)
+                    players.Insert(CullPassPointsComponent.teamRedSize,playerAddedToTeamEventArgs.publicPlayerData);
+                CullPassPointsComponent.teamRedSize++;
+            }
+            else
+            {
+                PlayerPositionElements.Insert(CullPassPointsComponent.teamRedSize+ CullPassPointsComponent.teamBlueSize, new PlayerPositionElement(Vector2.zero));
+                if (!aux)
+                    players.Insert(CullPassPointsComponent.teamRedSize + CullPassPointsComponent.teamBlueSize, playerAddedToTeamEventArgs.publicPlayerData);
+                CullPassPointsComponent.teamBlueSize++;
+            }
+            entityManager.SetComponentData<CullPassPointsComponent>(entity, CullPassPointsComponent);
+            aux = true;
+        }
+    }
+    
     void createEntities()
     {
         for (int i = 0; i < cullPassPointsParams.entitySize; i++)
         {
-            EntityArchetype entityArchetype = entityManager.CreateArchetype(typeof(LonelyPointElement), typeof(CullPassPointsComponent));
+            EntityArchetype entityArchetype = entityManager.CreateArchetype(typeof(LonelyPointElement), typeof(CullPassPointsComponent), typeof(PlayerPositionElement));
             Entity entity = entityManager.CreateEntity(entityArchetype);
             DynamicBuffer<LonelyPointElement> lonelyPointElements = entityManager.GetBuffer<LonelyPointElement>(entity);
             for (int j = 0; j < cullPassPointsParams.entityPointSize; j++)
@@ -89,6 +118,25 @@ public class CullPassPoints : MonoBehaviour
                 lonelyPointElements2 = entityManager.GetBuffer<LonelyPointElement>(entities[entityIndex]);
                 lonelyPointElements2.Clear();
             }
+        }
+    }
+    private void TestPlayers()
+    {
+        print("eooo");
+        Team teamRed = Teams.getTeamByName("Red");
+        Team teamBlue = Teams.getTeamByName("Blue");
+        foreach (var publicPlayerData in teamRed.publicPlayerDatas)
+        {
+            print(publicPlayerData.playerID);
+        }
+        foreach (var publicPlayerData in teamBlue.publicPlayerDatas)
+        {
+            print(publicPlayerData.playerID);
+        }
+        print("aaaaa");
+        foreach (var publicPlayerData in players)
+        {
+            print(publicPlayerData.playerID);
         }
     }
 }

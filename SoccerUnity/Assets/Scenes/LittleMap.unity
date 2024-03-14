@@ -46641,6 +46641,7 @@ MonoBehaviour:
     entityPointSize: 10
   SearchLonelyPointsManager: {fileID: 1028019885}
   teamName: Red
+  test: 0
 --- !u!1 &1876518188
 GameObject:
   m_ObjectHideFlags: 0
